@@ -1,4 +1,4 @@
-import { Link } from "wouter-preact"
+import { Link } from "wouter-preact";
 
 export default function NavBar() {
   return (
@@ -12,5 +12,5 @@ export default function NavBar() {
         </li>
       </ul>
     </nav>
-  )
+  );
 }
