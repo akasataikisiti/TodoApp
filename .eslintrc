@@ -6,7 +6,7 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended",
+    "preact",
     // prettier系は他のルールの下に追加
     "prettier",
   ],
@@ -20,5 +20,6 @@
   ],
   "rules": {
     "react/react-in-jsx-scope": "off",
+    "jest/no-deprecated-functions": "off"
   }
 }
