@@ -1,14 +1,19 @@
 import { render } from "preact";
 import "./css/index.css";
 
+import BoardForm from "./components/BoardForm";
+import { Route } from "wouter-preact";
+
 function Main() {
   return (
-    <div>
-      <h1>My Preact App</h1>
-      <p>
-        Edit <code>src/main.tsx</code> and save to test HMR
-      </p>
-    </div>
+    <>
+      <Route path="/">
+        <BoardForm />
+      </Route>
+      <Route path="/tes">
+        <div>tes</div>
+      </Route>
+    </>
   );
 }
 
