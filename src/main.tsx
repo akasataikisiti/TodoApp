@@ -28,7 +28,7 @@ function Main() {
   return (
     <>
       <Route path="/">
-        <PageIndex state={boardsState} />
+        <PageIndex boards={boardsState} />
       </Route>
       <Route path="/tes">
         <div>tes</div>

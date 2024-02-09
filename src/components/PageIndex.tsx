@@ -1,15 +1,11 @@
 import { Signal } from "@preact/signals";
 import { Board } from "../types/board";
+import BoardList from "./BoardList";
 
-export default function PageIndex({ state }: { state: Signal<Board[]> }) {
+export default function PageIndex({ boards }: { boards: Signal<Board[]> }) {
   return (
     <div>
-      <h1>Boards</h1>
-      <ul>
-        {state.value.map((board) => (
-          <li key={board.id}>{board.title + " " + board.data}</li>
-        ))}
-      </ul>
+      <BoardList boards={boards} />
     </div>
   );
 }
