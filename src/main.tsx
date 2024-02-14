@@ -1,8 +1,13 @@
 import { render } from "preact";
-import "./css/index.css";
+import "./css/token.css";
+import "./css/reset.css";
+import "./css/base.css";
+import "./css/utility.css";
+import "./css/layout.css";
+import "./css/pattern.css";
 
 import { Route } from "wouter-preact";
-import { Signal, signal } from "@preact/signals";
+import { Signal } from "@preact/signals";
 import { Board } from "./types/board";
 import { useEffect } from "preact/hooks";
 import PageIndex from "./components/PageIndex";
@@ -11,8 +16,6 @@ import NavBar from "./components/NavBar";
 import { createSignals } from "./appSignals";
 import { Display } from "./types/display";
 
-const boardsState: Signal<Board[]> = signal<Board[]>([]);
-const appDisplay: Signal<Display> = createSignals().appDisplay;
 const testBoards: Board[] = [
   {
     id: "id1",
@@ -25,6 +28,9 @@ const testBoards: Board[] = [
     data: "asdfasdfaaa"
   }
 ];
+
+const appDisplay: Signal<Display> = createSignals().appDisplay;
+const boardsState: Signal<Board[]> = createSignals().BoardSignal;
 
 function Main() {
   useEffect(() => {

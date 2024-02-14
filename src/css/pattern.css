@@ -1,0 +1,117 @@
+/* height specific */
+.pattern-height-board-list {
+  max-height: calc(100vh - 18rem);
+}
+
+.pattern-height-card-list {
+  max-height: calc(100vh - 15.5rem);
+}
+
+/* dropdown */
+.pattern-dropdown {
+  position: relative;
+}
+
+.pattern-dropdown > summary {
+  list-style: none;
+}
+
+.pattern-dropdown > summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open].pattern-dropdown > summary:before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+}
+
+.pattern-dropdown > div {
+  position: absolute;
+  top: 2rem;
+  right: 0;
+  z-index: 100;
+}
+
+/* scrollbar-thick */
+.pattern-scrollbar-thick::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-bg-scrollbar);
+}
+
+.pattern-scrollbar-thick::-webkit-scrollbar-thumb {
+  background-color: var(--color-bg-scrollbar-thumb);
+}
+
+/* scrollbar-thin */
+.pattern-scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  background-color: var(--color-bg-scrollbar);
+}
+
+.pattern-scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: var(--color-bg-scrollbar-thumb);
+}
+
+/* mask */
+.pattern-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg-mask);
+  opacity: 0.75;
+}
+
+/* parent-hiding-child */
+.pattern-hiding-child > .pattern-hidden-child {
+  display: none;
+}
+
+.pattern-hiding-child > * > .pattern-hidden-child {
+  display: none;
+}
+
+.pattern-hiding-child:hover > .pattern-hidden-child {
+  display: inline-block;
+}
+
+.pattern-hiding-child:hover > * > .pattern-hidden-child {
+  display: inline-block;
+}
+
+/* file */
+.pattern-file::file-selector-button {
+  border-style: none;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  color: var(--color-text-secondary);
+}
+
+/* progress */
+.pattern-progress {
+  appearance: none;
+}
+
+progress[value].pattern-progress::-webkit-progress-bar {
+  background-color: var(--color-bg-progress-bar);
+}
+
+progress[value].pattern-progress::-webkit-progress-value {
+  background-color: var(--color-bg-progress-value);
+}
+
+/* color palette */
+input:checked + .pattern-color-palette {
+  outline: var(--color-focus) solid 1px;
+}
