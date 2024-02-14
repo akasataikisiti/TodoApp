@@ -6,8 +6,13 @@ import { Signal, signal } from "@preact/signals";
 import { Board } from "./types/board";
 import { useEffect } from "preact/hooks";
 import PageIndex from "./components/PageIndex";
+import PageComponents from "./components/PageComponents";
+import NavBar from "./components/NavBar";
+import { createSignals } from "./appSignals";
+import { Display } from "./types/display";
 
 const boardsState: Signal<Board[]> = signal<Board[]>([]);
+const appDisplay: Signal<Display> = createSignals().appDisplay;
 const testBoards: Board[] = [
   {
     id: "id1",
@@ -27,12 +32,15 @@ function Main() {
   }, []);
   return (
     <>
-      <Route path="/">
-        <PageIndex boards={boardsState} />
-      </Route>
-      <Route path="/tes">
-        <div>tes</div>
-      </Route>
+      <NavBar display={appDisplay} />
+      <main>
+        <Route path="/">
+          <PageIndex state={boardsState} />
+        </Route>
+        <Route path="/components">
+          <PageComponents />
+        </Route>
+      </main>
     </>
   );
 }

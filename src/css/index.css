@@ -115,3 +115,9 @@ body {
   font-family: sans-serif;
   line-height: 1.5rem;
 }
+
+/* layout test */
+.layout-stack-2 > * + * {
+  margin-top: 20px; /* 最初の要素を除く、すべての要素の上に20pxのマージンを適用 */
+  background-color: var(--color-blue-800);
+}
