@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { Signal } from "@preact/signals";
 import { Board } from "../types/board";
 import BoardList from "./BoardList";
@@ -9,13 +10,23 @@ export default function PageIndex({ state }: { state: Signal<Board[]> }) {
 
   const handleDialogOpen = () => {
     setDialogOpen(true);
-    console.log(dialogOpen);
   };
 
   const handleDialogClose = () => {
     setDialogOpen(false);
-    console.log(dialogOpen);
   };
+
+  const addBoard = (name: string) => {
+    state.value = [
+      ...state.value,
+      {
+        id: uuidv4(),
+        title: name,
+        data: "asdfasdfasdf"
+      }
+    ];
+  };
+
   return (
     <div class="px-3">
       <div class="layout-center overflow-hidden w-full layout-stack-8">
@@ -37,6 +48,7 @@ export default function PageIndex({ state }: { state: Signal<Board[]> }) {
             <BoardFormDialog
               open={dialogOpen}
               handleClickMask={handleDialogClose}
+              addBoard={addBoard}
             />
           </div>
         </div>

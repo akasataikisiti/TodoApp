@@ -1,13 +1,26 @@
 import { useEffect, useRef } from "preact/hooks";
+import { JSX } from "preact/jsx-runtime";
 
 export function BoardFormDialog({
   open,
-  handleClickMask
+  handleClickMask,
+  addBoard
 }: {
   open: boolean;
   handleClickMask: () => void;
+  addBoard: (name: string) => void;
 }) {
   const refName = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = (e: JSX.TargetedEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (refName.current) {
+      if (refName.current.value !== "") {
+        addBoard(refName.current.value);
+        handleClickMask();
+      }
+    }
+  };
 
   useEffect(() => {
     if (open) {
@@ -18,12 +31,12 @@ export function BoardFormDialog({
   if (open) {
     return (
       <>
-        <div class="pattern-mask" />
+        <div class="pattern-mask" onClick={handleClickMask} />
         <dialog
           class="layout-center p-8 border-solid border-1 border-color-primary bg-primary w-full"
           open={open}
         >
-          <form onSubmit={(e) => e.preventDefault()} class="layout-stack-8">
+          <form onSubmit={handleSubmit} class="layout-stack-8">
             <div class="layout-stack-4">
               <label class="flex-column layout-stack-2">
                 <span class="text-secondary text-small">Board name</span>
@@ -80,7 +93,6 @@ export function BoardFormDialog({
         </dialog>
       </>
     );
-  } else {
-    <></>;
   }
+  return <></>;
 }
