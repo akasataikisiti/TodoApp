@@ -1,5 +1,7 @@
-import { useEffect, useRef } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import { JSX } from "preact/jsx-runtime";
+import { BgColor } from "../types/bgColor";
+import FormBoardBgColor from "./FormBoardBgColor";
 
 export function BoardFormDialog({
   open,
@@ -8,15 +10,20 @@ export function BoardFormDialog({
 }: {
   open: boolean;
   handleClickMask: () => void;
-  addBoard: (name: string) => void;
+  addBoard: (name: string, bgColor: BgColor | null) => void;
 }) {
   const refName = useRef<HTMLInputElement>(null);
+  const [bgColor, setBgColor] = useState<BgColor | null>(null);
+
+  const selectBgColor = (e: JSX.TargetedMouseEvent<HTMLInputElement>) => {
+    setBgColor(e.currentTarget.value as BgColor);
+  };
 
   const handleSubmit = (e: JSX.TargetedEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (refName.current) {
       if (refName.current.value !== "") {
-        addBoard(refName.current.value);
+        addBoard(refName.current.value, null);
         handleClickMask();
       }
     }
@@ -66,21 +73,12 @@ export function BoardFormDialog({
                 </div>
               </div>
               <div class="layout-stack-2">
-                <div class="text-secondary text-small">Board color</div>
+                <div class="text-secondary text-small">Background Color</div>
                 <div class="text-secondary text-small layout-stack-horizontal-1">
-                  <label>
-                    <input type="radio" value="None" class="" checked={true} />
-                    <span class="px-1">None</span>
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      value="Preset"
-                      class=""
-                      checked={false}
-                    />
-                    <span class="px-1">Todo, Doing, Done</span>
-                  </label>
+                  <FormBoardBgColor
+                    selectBgColor={selectBgColor}
+                    selectedBgColor={bgColor}
+                  />
                 </div>
               </div>
             </div>

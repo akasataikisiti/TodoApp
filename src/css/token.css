@@ -2,6 +2,18 @@
 :root {
   --color-black: #000000;
   --color-white: #ffffff;
+  --color-red-light: rgba(255, 59, 48, 50%);
+  --color-red-dark: rgba(255, 69, 58, 50%);
+  --color-yellow-light: rgba(255, 204, 0, 50%);
+  --color-yellow-dark: rgba(255, 214, 10, 50%);
+  --color-green-light: rgba(40, 205, 65, 50%);
+  --color-green-dark: rgba(50, 215, 75, 50%);
+  --color-blue-light: rgba(0, 122, 255, 50%);
+  --color-blue-dark: rgba(10, 132, 255, 50%);
+  --color-cyan-light: rgba(85, 190, 240, 50%);
+  --color-cyan-dark: rgba(90, 200, 245, 50%);
+  --color-magenta-light: rgba(175, 82, 222, 50%);
+  --color-magenta-dark: rgba(191, 90, 242, 50%);
   --color-red: #f44336;
   --color-red-50: #ffebee;
   --color-red-100: #ffcdd2;

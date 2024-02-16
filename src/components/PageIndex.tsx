@@ -4,6 +4,7 @@ import { Board } from "../types/board";
 import BoardList from "./BoardList";
 import { useState } from "preact/hooks";
 import { BoardFormDialog } from "./BoardFormDialog";
+import { BgColor as bgColor } from "../types/bgColor";
 
 export default function PageIndex({ state }: { state: Signal<Board[]> }) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -16,13 +17,14 @@ export default function PageIndex({ state }: { state: Signal<Board[]> }) {
     setDialogOpen(false);
   };
 
-  const addBoard = (name: string) => {
+  const addBoard = (name: string, bgColor: bgColor | null) => {
     state.value = [
       ...state.value,
       {
         id: uuidv4(),
         title: name,
-        data: "asdfasdfasdf"
+        data: "asdfasdfasdf",
+        bgColor
       }
     ];
   };
