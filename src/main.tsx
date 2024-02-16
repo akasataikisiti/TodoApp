@@ -15,19 +15,8 @@ import PageComponents from "./components/PageComponents";
 import NavBar from "./components/NavBar";
 import { createSignals } from "./appSignals";
 import { Display } from "./types/display";
-
-const testBoards: Board[] = [
-  {
-    id: "id1",
-    title: "Title 1",
-    data: "asdfasdf"
-  },
-  {
-    id: "id2",
-    title: "Title 2",
-    data: "asdfasdfaaa"
-  }
-];
+import PageBoard from "./components/PageBoard";
+import { testBoards } from "./testsdata";
 
 const appDisplay: Signal<Display> = createSignals().appDisplay;
 const boardsState: Signal<Board[]> = createSignals().BoardSignal;
@@ -45,6 +34,11 @@ function Main() {
         </Route>
         <Route path="/components">
           <PageComponents />
+        </Route>
+        <Route path="/board/:boardid">
+          {(params) => (
+            <PageBoard boardId={params.boardid} state={boardsState} />
+          )}
         </Route>
       </main>
     </>

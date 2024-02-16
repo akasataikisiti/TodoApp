@@ -23,7 +23,7 @@ export default function PageIndex({ state }: { state: Signal<Board[]> }) {
       {
         id: uuidv4(),
         title: name,
-        data: "asdfasdfasdf",
+        lists: [],
         bgColor
       }
     ];

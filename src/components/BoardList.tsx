@@ -3,7 +3,7 @@ import BoardItem from "./BoardItem";
 
 export default function BoardList({ boards }: { boards: Board[] }) {
   return (
-    <div>
+    <div class="layout-stack-2 overflow-y-auto pattern-height-board-list py-2 pr-2 pattern-scrollbar-thick">
       {boards.length === 0 ? (
         <div>Create new board</div>
       ) : (
