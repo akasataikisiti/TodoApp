@@ -3,6 +3,8 @@ import { Board } from "../types/board";
 import BoardHeader from "./BoardHeader";
 import ListHeader from "./ListHeader";
 import CardList from "./CardList";
+import { ApplicationService } from "../applications/applicationService";
+import { RepositoryLocalFile } from "../repositories/repository";
 
 export default function PageBoard({
   boardId,
@@ -11,9 +13,21 @@ export default function PageBoard({
   boardId: string;
   state: Signal<Board[]>;
 }) {
+  const updateState = (boards: Board[]) => {
+    state.value = boards;
+  };
+
+  const repository = new RepositoryLocalFile();
+  const service = new ApplicationService(repository);
   const found = state.value.find((b) => {
     return b.id === boardId;
   });
+
+  const updateBoardName = (id: string, title: string) => {
+    const update = service.updateBoardTitle(state.value, title, id);
+    updateState(update);
+  };
+
   return (
     <div
       class={`flex-column h-full bg-${found?.bgColor ? found.bgColor : "primary"}`}
@@ -23,7 +37,8 @@ export default function PageBoard({
           <BoardHeader
             id={found.id}
             title={found.title}
-            bgColor={found.bgColor}
+            // bgColor={found.bgColor}
+            updateBoardName={updateBoardName}
           />
         </div>
       )}
