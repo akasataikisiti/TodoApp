@@ -3,6 +3,8 @@ import { JSX } from "preact/jsx-runtime";
 import { BgColor } from "../types/bgColor";
 import FormBoardBgColor from "./FormBoardBgColor";
 
+type listsType = "None" | "Preset";
+
 export function BoardFormDialog({
   open,
   handleClickMask,
@@ -10,20 +12,37 @@ export function BoardFormDialog({
 }: {
   open: boolean;
   handleClickMask: () => void;
-  addBoard: (name: string, bgColor: BgColor | null) => void;
+  addBoard: (
+    title: string,
+    listTitles: string[],
+    bgColor: BgColor | null
+  ) => void;
 }) {
   const refName = useRef<HTMLInputElement>(null);
   const [bgColor, setBgColor] = useState<BgColor | null>(null);
+  const [listsType, setListsType] = useState<listsType>("None");
 
   const selectBgColor = (e: JSX.TargetedMouseEvent<HTMLInputElement>) => {
-    setBgColor(e.currentTarget.value as BgColor);
+    if (e.currentTarget.value !== "none") {
+      setBgColor(e.currentTarget.value as BgColor);
+    } else {
+      setBgColor(null);
+    }
+  };
+
+  const handleChangeListsType = (e: JSX.TargetedEvent<HTMLInputElement>) => {
+    setListsType(e.currentTarget.value as listsType);
   };
 
   const handleSubmit = (e: JSX.TargetedEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (refName.current) {
       if (refName.current.value !== "") {
-        addBoard(refName.current.value, null);
+        addBoard(
+          refName.current.value,
+          listsType === "None" ? [] : ["Todo", "Doing", "Done"],
+          bgColor
+        );
         handleClickMask();
       }
     }
@@ -58,7 +77,13 @@ export function BoardFormDialog({
                 <div class="text-secondary text-small">Default lists</div>
                 <div class="flex-column border-none text-secondary text-small layout-stack-1 pl-2">
                   <label>
-                    <input type="radio" value="None" class="" checked={true} />
+                    <input
+                      type="radio"
+                      value="None"
+                      class=""
+                      checked={listsType === "None"}
+                      onClick={handleChangeListsType}
+                    />
                     <span class="px-1">None</span>
                   </label>
                   <label>
@@ -66,7 +91,8 @@ export function BoardFormDialog({
                       type="radio"
                       value="Preset"
                       class=""
-                      checked={false}
+                      checked={listsType === "Preset"}
+                      onClick={handleChangeListsType}
                     />
                     <span class="px-1">Todo, Doing, Done</span>
                   </label>

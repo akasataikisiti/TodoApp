@@ -39,7 +39,7 @@ function Main() {
   return (
     <>
       <NavBar display={appDisplay} />
-      <main>
+      <main class="f-1 overflow-y-auto pattern-scrollbar-thick bg-primary">
         <Route path="/">
           <PageIndex state={boardsState} />
         </Route>

@@ -1,13 +1,16 @@
-import { v4 as uuidv4 } from "uuid";
 import { Signal } from "@preact/signals";
 import { Board } from "../types/board";
 import BoardList from "./BoardList";
 import { useState } from "preact/hooks";
 import { BoardFormDialog } from "./BoardFormDialog";
-import { BgColor as bgColor } from "../types/bgColor";
+import { BgColor } from "../types/bgColor";
+import { ApplicationService } from "../applications/applicationService";
+import { RepositoryLocalFile } from "../repositories/repository";
 
 export default function PageIndex({ state }: { state: Signal<Board[]> }) {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const repository = new RepositoryLocalFile();
+  const service = new ApplicationService(repository);
 
   const handleDialogOpen = () => {
     setDialogOpen(true);
@@ -17,16 +20,12 @@ export default function PageIndex({ state }: { state: Signal<Board[]> }) {
     setDialogOpen(false);
   };
 
-  const addBoard = (name: string, bgColor: bgColor | null) => {
-    state.value = [
-      ...state.value,
-      {
-        id: uuidv4(),
-        title: name,
-        lists: [],
-        bgColor
-      }
-    ];
+  const addBoard = (
+    title: string,
+    listTitles: string[],
+    bgColor: BgColor | null
+  ) => {
+    state.value = service.createBoard(state.value, title, listTitles, bgColor);
   };
 
   return (
