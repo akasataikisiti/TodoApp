@@ -4,12 +4,12 @@ import { JSX } from "preact/jsx-runtime";
 export default function BoardHeader({
   id,
   title,
-  // bgColor
+  bgColor,
   updateBoardName
 }: {
   id: string;
   title: string;
-  // bgColor: string | null;
+  bgColor: string | null;
   updateBoardName: (id: string, title: string) => void;
 }) {
   const [isEditing, setIsEditing] = useState(false);

@@ -37,7 +37,7 @@ export default function PageBoard({
           <BoardHeader
             id={found.id}
             title={found.title}
-            // bgColor={found.bgColor}
+            bgColor={found.bgColor}
             updateBoardName={updateBoardName}
           />
         </div>
