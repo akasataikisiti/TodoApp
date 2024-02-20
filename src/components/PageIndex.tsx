@@ -100,7 +100,10 @@ export default function PageIndex({ state }: { state: Signal<Board[]> }) {
             />
           </div>
           <div class="overflow-y-auto">
-            <BoardList boards={state.value} />
+            <BoardList
+              boards={state.value}
+              handleOpenDialog={handleDialogOpen}
+            />
           </div>
         </div>
       </div>
