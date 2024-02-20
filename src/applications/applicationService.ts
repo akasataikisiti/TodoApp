@@ -39,8 +39,6 @@ export class ApplicationService {
     const lists: List[] = listTitles.map((title) => {
       return { id: uuidv4(), title, cards: [] };
     });
-    console.log("test");
-    console.log(bgColor);
     const newBoard: Board = {
       id: v4(),
       title,
@@ -57,6 +55,20 @@ export class ApplicationService {
       return board.id === boardId ? { ...board, title } : board;
     });
     this.repository.set(updated);
+    return updated;
+  }
+  // List
+  createList(state: Board[], listTitle: string, boardId: string): Board[] {
+    const newList: List = {
+      id: v4(),
+      title: listTitle,
+      cards: []
+    };
+    const updated = state.map((board) => {
+      return board.id === boardId
+        ? { ...board, lists: [...board.lists, newList] }
+        : board;
+    });
     return updated;
   }
 }
