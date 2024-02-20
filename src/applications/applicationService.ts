@@ -69,6 +69,7 @@ export class ApplicationService {
         ? { ...board, lists: [...board.lists, newList] }
         : board;
     });
+    this.repository.set(updated);
     return updated;
   }
 }
