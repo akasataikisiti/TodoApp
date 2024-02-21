@@ -3,6 +3,7 @@ import { Repository } from "../repositories/repository";
 import { BgColor } from "../types/bgColor";
 import { Board } from "../types/board";
 import { List } from "../types/lists";
+import { Card } from "../types/card";
 
 // const migrateState = (boards: Board[]): Board[] => {
 //   return boards;
@@ -67,6 +68,36 @@ export class ApplicationService {
     const updated = state.map((board) => {
       return board.id === boardId
         ? { ...board, lists: [...board.lists, newList] }
+        : board;
+    });
+    this.repository.set(updated);
+    return updated;
+  }
+  // Card
+  createCard(
+    state: Board[],
+    cardTitle: string,
+    boardId: string,
+    listId: string
+  ): Board[] {
+    const now = new Date();
+    const newCard: Card = {
+      id: v4(),
+      title: cardTitle,
+      description: "",
+      createdAt: now.toISOString(),
+      updatedAt: now.toISOString()
+    };
+    const updated = state.map((board) => {
+      return board.id === boardId
+        ? {
+            ...board,
+            lists: board.lists.map((list) => {
+              return list.id === listId
+                ? { ...list, cards: [...list.cards, newCard] }
+                : list;
+            })
+          }
         : board;
     });
     this.repository.set(updated);

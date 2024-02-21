@@ -7,6 +7,7 @@ import { ApplicationService } from "../applications/applicationService";
 import { RepositoryLocalFile } from "../repositories/repository";
 import { JSX } from "preact/jsx-runtime";
 import { useRef } from "preact/hooks";
+import CardForm from "./CardForm";
 
 export default function PageBoard({
   boardId,
@@ -45,6 +46,11 @@ export default function PageBoard({
     }
   };
 
+  const addCard = (listId: string, cardTitle: string) => {
+    const updated = service.createCard(state.value, cardTitle, boardId, listId);
+    updateState(updated);
+  };
+
   return (
     <div
       class={`flex-column h-full bg-${found?.bgColor ? found.bgColor : "primary"}`}
@@ -65,6 +71,7 @@ export default function PageBoard({
             <div key={idx} class="flex-column">
               <div class="w-64 p-3 bg-secondary rounded-2 layout-stack-3 drop-shadow">
                 <ListHeader id={list.id} title={list.title} />
+                <CardForm listId={list.id} addCard={addCard} />
                 <CardList cards={list.cards} listId={list.id} />
               </div>
             </div>
