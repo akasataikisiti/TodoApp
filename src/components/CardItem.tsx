@@ -1,16 +1,65 @@
+import { useRef, useState } from "preact/hooks";
+import { JSX } from "preact/jsx-runtime";
+
 export default function CardItem({
-  id,
+  cardId,
   listId,
-  cardTitle
+  cardTitle,
+  deleteCard,
+  updateCardTitle
 }: {
-  id: string;
+  cardId: string;
   listId: string;
   cardTitle: string;
+  deleteCard: (id: string, listId: string) => void;
+  updateCardTitle: (cardId: string, cardTitle: string, listId: string) => void;
 }) {
+  const ref = useRef<HTMLTextAreaElement>(null);
+  const [editing, setEditing] = useState<boolean>(false);
+  const isSeparator = (cardTitle: string) => {
+    return cardTitle === "---";
+  };
+  const hendleKeyDown = (e: JSX.TargetedKeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (ref.current?.value) {
+        updateCardTitle(cardId, ref.current.value, listId);
+        setEditing(false);
+      } else if (ref.current?.value === "") {
+        deleteCard(cardId, listId);
+        setEditing(false);
+      }
+    }
+  };
+
+  const handleClickEdit = () => {
+    setEditing(true);
+  };
+
   return (
     <div class="rounded-1 p-2 bg-primary flex-column cursor-grab drop-shadow pattern-hiding-child hover-bg-card-item">
-      <div class="p-4 cursor-pointer flex-column layout-stack-2 text-decoration-none text-primary">
-        {`${id} ${listId} ${cardTitle}`}
+      <div class="f-1 overflow-x-hidden">
+        {editing ? (
+          <textarea
+            class="w-full border-none rounded-1 p-2 resize-none text-medium font-sans-serif"
+            ref={ref}
+            onKeyDown={hendleKeyDown}
+          >
+            {cardTitle}
+          </textarea>
+        ) : (
+          <>
+            {!isSeparator(cardTitle) ? (
+              <div class="overflow-wrap-break-word" onClick={handleClickEdit}>
+                {cardTitle}
+              </div>
+            ) : (
+              <button class="w-full h-4 bg-transparent border-none px-2">
+                <hr class="border-solid border-1 border-color-primary" />
+              </button>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

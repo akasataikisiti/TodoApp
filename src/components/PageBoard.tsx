@@ -6,21 +6,33 @@ import CardList from "./CardList";
 import { ApplicationService } from "../applications/applicationService";
 import { RepositoryLocalFile } from "../repositories/repository";
 import { JSX } from "preact/jsx-runtime";
-import { useRef } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import CardForm from "./CardForm";
 import { BgColor } from "../types/bgColor";
 
 export default function PageBoard({
   boardId,
-  state
+  state,
+  cardId
 }: {
   boardId: string;
   state: Signal<Board[]>;
+  cardId?: string;
 }) {
   const inputElement = useRef<HTMLInputElement>(null);
 
   const repository = new RepositoryLocalFile();
   const service = new ApplicationService(repository);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  useEffect(() => {
+    if (cardId) {
+      setIsDialogOpen(true);
+    } else {
+      setIsDialogOpen(false);
+    }
+  }, [cardId]);
+
   const found = state.value.find((b) => {
     return b.id === boardId;
   });
@@ -66,6 +78,26 @@ export default function PageBoard({
     updateState(updated);
   };
 
+  const updateCardTitle = (
+    cardId: string,
+    cardTitle: string,
+    listId: string
+  ) => {
+    const updated = service.updateCardTitle(
+      state.value,
+      boardId,
+      listId,
+      cardId,
+      cardTitle
+    );
+    updateState(updated);
+  };
+
+  const deleteCard = (cardId: string, listId: string) => {
+    const updated = service.deleteCard(state.value, cardId, boardId, listId);
+    updateState(updated);
+  };
+
   return (
     <div
       class={`flex-column h-full bg-${found?.bgColor ? found.bgColor : "primary"}`}
@@ -89,7 +121,12 @@ export default function PageBoard({
               <div class="w-64 p-3 bg-secondary rounded-2 layout-stack-3 drop-shadow">
                 <ListHeader id={list.id} title={list.title} />
                 <CardForm listId={list.id} addCard={addCard} />
-                <CardList cards={list.cards} listId={list.id} />
+                <CardList
+                  cards={list.cards}
+                  listId={list.id}
+                  deleteCard={deleteCard}
+                  updateCardTitle={updateCardTitle}
+                />
               </div>
             </div>
           ))}

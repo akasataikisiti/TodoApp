@@ -3,10 +3,14 @@ import CardItem from "./CardItem";
 
 export default function CardList({
   cards,
-  listId
+  listId,
+  deleteCard,
+  updateCardTitle
 }: {
   cards: Card[];
   listId: string;
+  deleteCard: (id: string, listId: string) => void;
+  updateCardTitle: (cardId: string, cardTitle: string, listId: string) => void;
 }) {
   return (
     <div class="layout-stack-2 pattern-height-card-list overflow-y-auto pattern-scrollbar-thin">
@@ -16,9 +20,11 @@ export default function CardList({
         cards.map((card, idx) => (
           <CardItem
             key={idx}
-            id={card.id}
+            cardId={card.id}
             listId={listId}
             cardTitle={card.title}
+            deleteCard={deleteCard}
+            updateCardTitle={updateCardTitle}
           />
         ))
       )}

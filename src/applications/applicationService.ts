@@ -122,4 +122,62 @@ export class ApplicationService {
     this.repository.set(updated);
     return updated;
   }
+  updateCardTitle = (
+    state: Board[],
+    boardId: string,
+    listId: string,
+    cardId: string,
+    cardTitle: string
+  ): Board[] => {
+    const now = new Date().toISOString();
+    const updated = state.map((board) => {
+      return board.id === boardId
+        ? {
+            ...board,
+            lists: board.lists.map((list) => {
+              return list.id === listId
+                ? {
+                    ...list,
+                    cards: list.cards.map((card) => {
+                      return card.id === cardId
+                        ? {
+                            ...card,
+                            title: cardTitle,
+                            updatedAt: now
+                          }
+                        : card;
+                    })
+                  }
+                : list;
+            })
+          }
+        : board;
+    });
+    this.repository.set(updated);
+    return updated;
+  };
+  deleteCard = (
+    state: Board[],
+    cardId: string,
+    boardId: string,
+    listId: string
+  ): Board[] => {
+    const updated = state.map((board) => {
+      return board.id === boardId
+        ? {
+            ...board,
+            lists: board.lists.map((list) => {
+              return list.id === listId
+                ? {
+                    ...list,
+                    cards: list.cards.filter((card) => card.id !== cardId)
+                  }
+                : list;
+            })
+          }
+        : board;
+    });
+    this.repository.set(updated);
+    return updated;
+  };
 }

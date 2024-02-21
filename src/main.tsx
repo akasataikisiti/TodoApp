@@ -51,6 +51,15 @@ function Main() {
             <PageBoard boardId={params.boardid} state={boardsState} />
           )}
         </Route>
+        <Route path="/board/:boardid/card/:cardid">
+          {(params) => {
+            <PageBoard
+              boardId={params.boardid}
+              state={boardsState}
+              cardId={params.cardid}
+            />;
+          }}
+        </Route>
       </main>
     </>
   );
