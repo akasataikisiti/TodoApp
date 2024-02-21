@@ -8,6 +8,7 @@ import { RepositoryLocalFile } from "../repositories/repository";
 import { JSX } from "preact/jsx-runtime";
 import { useRef } from "preact/hooks";
 import CardForm from "./CardForm";
+import { BgColor } from "../types/bgColor";
 
 export default function PageBoard({
   boardId,
@@ -46,6 +47,20 @@ export default function PageBoard({
     }
   };
 
+  const selectBgColor = (e: JSX.TargetedMouseEvent<HTMLInputElement>) => {
+    const updated = service.updateBoardBgColor(
+      state.value,
+      e.currentTarget.value as BgColor,
+      boardId
+    );
+    updateState(updated);
+  };
+
+  const deleteBoard = (boardId: string) => {
+    const updated = service.deleteBoard(state.value, boardId);
+    updateState(updated);
+  };
+
   const addCard = (listId: string, cardTitle: string) => {
     const updated = service.createCard(state.value, cardTitle, boardId, listId);
     updateState(updated);
@@ -62,6 +77,8 @@ export default function PageBoard({
             title={found.title}
             bgColor={found.bgColor}
             updateBoardName={updateBoardName}
+            selectBgColor={selectBgColor}
+            deleteBoard={deleteBoard}
           />
         </div>
       )}

@@ -51,6 +51,18 @@ export class ApplicationService {
     return updated;
   }
 
+  updateBoardBgColor(
+    boards: Board[],
+    bgColor: BgColor | null,
+    boardId: string
+  ) {
+    const updated = boards.map((board) => {
+      return board.id === boardId ? { ...board, bgColor } : board;
+    });
+    this.repository.set(updated);
+    return updated;
+  }
+
   updateBoardTitle(boards: Board[], title: string, boardId: string) {
     const updated = boards.map((board) => {
       return board.id === boardId ? { ...board, title } : board;
@@ -58,6 +70,13 @@ export class ApplicationService {
     this.repository.set(updated);
     return updated;
   }
+
+  deleteBoard(boards: Board[], boardId: string) {
+    const updated = boards.filter((board) => board.id !== boardId);
+    this.repository.set(updated);
+    return updated;
+  }
+
   // List
   createList(state: Board[], listTitle: string, boardId: string): Board[] {
     const newList: List = {
