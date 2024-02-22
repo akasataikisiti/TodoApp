@@ -36,6 +36,16 @@ export default function PageIndex({ state }: { state: Signal<Board[]> }) {
     state.value = service.createBoard(state.value, title, listTitles, bgColor);
   };
 
+  const STORAGE_LIMIT = 5200000;
+  const LOCAL_STORAGE_KEY = "MY_TODOS";
+  const getsize = (storage_key: string) => {
+    if (localStorage[storage_key]) {
+      return new Blob([localStorage[storage_key]]).size;
+    }
+    return 0;
+  };
+  const storageDataSize = getsize(LOCAL_STORAGE_KEY);
+
   return (
     <div class="px-3">
       <div class="layout-center overflow-hidden w-full layout-stack-8">
@@ -104,6 +114,21 @@ export default function PageIndex({ state }: { state: Signal<Board[]> }) {
               boards={state.value}
               handleOpenDialog={handleDialogOpen}
             />
+          </div>
+          <div>
+            <h2 class="text-medium">Storage</h2>
+            {storageDataSize > 0 && (
+              <div class="py-2">
+                <span class="text-secondary font-mono">
+                  {storageDataSize} / {STORAGE_LIMIT} bytes used on localStorage
+                </span>
+                <progress
+                  class="pattern-progress w-full h-4"
+                  max={STORAGE_LIMIT}
+                  value={storageDataSize}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
