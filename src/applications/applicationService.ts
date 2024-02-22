@@ -112,6 +112,19 @@ export class ApplicationService {
     return updated;
   }
 
+  deleteList(state: Board[], boardId: string, listId: string): Board[] {
+    const updated = state.map((board) => {
+      return board.id === boardId
+        ? {
+            ...board,
+            lists: board.lists.filter((list) => list.id !== listId)
+          }
+        : board;
+    });
+    this.repository.set(updated);
+    return updated;
+  }
+
   // Card
   createCard(
     state: Board[],
@@ -193,6 +206,25 @@ export class ApplicationService {
                     cards: list.cards.filter((card) => card.id !== cardId)
                   }
                 : list;
+            })
+          }
+        : board;
+    });
+    this.repository.set(updated);
+    return updated;
+  };
+
+  deleteAllCards = (
+    state: Board[],
+    boardId: string,
+    listId: string
+  ): Board[] => {
+    const updated = state.map((board) => {
+      return board.id === boardId
+        ? {
+            ...board,
+            lists: board.lists.map((list) => {
+              return list.id === listId ? { ...list, cards: [] } : list;
             })
           }
         : board;

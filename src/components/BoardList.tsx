@@ -33,7 +33,7 @@ export default function BoardList({
       <form onSubmit={handleSubmit} onReset={handleReset}>
         <div class="flex-row">
           <label for="board-filter">
-            <div class="h-6 border-solid border-1 border-color-primary border-r-none">
+            <div class="h-6 w-6 border-solid border-1 border-color-primary border-r-none flex-center">
               +
             </div>
           </label>
@@ -45,6 +45,12 @@ export default function BoardList({
             disabled={boards.length === 0}
             ref={inputElement}
           />
+          <button
+            type="reset"
+            class="h-6 w-6 border-solid border-1 border-color-primary text-secondary text-medium cursor-pointer"
+          >
+            ×
+          </button>
         </div>
       </form>
       {boards.length === 0 ? (

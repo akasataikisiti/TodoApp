@@ -119,6 +119,16 @@ export default function PageBoard({
     setQuery("");
   };
 
+  const deleteList = (listId: string) => {
+    const updated = service.deleteList(state.value, boardId, listId);
+    updateState(updated);
+  };
+
+  const deleteAllCards = (listId: string) => {
+    const updated = service.deleteAllCards(state.value, boardId, listId);
+    updateState(updated);
+  };
+
   const deleteCard = (cardId: string, listId: string) => {
     const updated = service.deleteCard(state.value, cardId, boardId, listId);
     updateState(updated);
@@ -170,10 +180,12 @@ export default function PageBoard({
             <div key={idx} class="flex-column">
               <div class="w-64 p-3 bg-secondary rounded-2 layout-stack-3 drop-shadow">
                 <ListHeader
-                  titleId={list.id}
+                  listId={list.id}
                   title={list.title}
                   cardsNum={list.cards.length}
                   updateListTitle={updateListTitle}
+                  deleteList={deleteList}
+                  deleteAllCards={deleteAllCards}
                 />
                 <CardForm listId={list.id} addCard={addCard} />
                 <CardList

@@ -24,6 +24,9 @@ export default function BoardHeader({
 
   const handleClick = () => {
     setIsEditing(true);
+    setTimeout(() => {
+      inputElement.current?.focus();
+    }, 100);
   };
 
   const handleBlur = () => {
