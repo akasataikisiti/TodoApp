@@ -58,7 +58,14 @@ export default function BoardList({
       ) : (
         <div class="layout-stack-2 overflow-y-auto pattern-height-board-list py-2 pr-2 pattern-scrollbar-thick">
           {filterBoardsByName(query, boards).map((board) => (
-            <BoardItem key={board.id} board={board} />
+            <BoardItem
+              key={board.id}
+              board={board}
+              cardsNum={board.lists.reduce(
+                (acc, list) => acc + list.cards.length,
+                0
+              )}
+            />
           ))}
         </div>
       )}

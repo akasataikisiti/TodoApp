@@ -92,6 +92,26 @@ export class ApplicationService {
     this.repository.set(updated);
     return updated;
   }
+  updateListTitle(
+    state: Board[],
+    listTitle: string,
+    boardId: string,
+    listId: string
+  ): Board[] {
+    const updated = state.map((board) => {
+      return board.id === boardId
+        ? {
+            ...board,
+            lists: board.lists.map((list) => {
+              return list.id === listId ? { ...list, title: listTitle } : list;
+            })
+          }
+        : board;
+    });
+    this.repository.set(updated);
+    return updated;
+  }
+
   // Card
   createCard(
     state: Board[],

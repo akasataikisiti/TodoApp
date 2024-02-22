@@ -1,4 +1,4 @@
-import { useRef, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import { JSX } from "preact/jsx-runtime";
 
 export default function CardItem({
@@ -16,6 +16,13 @@ export default function CardItem({
 }) {
   const ref = useRef<HTMLTextAreaElement>(null);
   const [editing, setEditing] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (editing) {
+      ref.current?.focus();
+    }
+  }, [editing]);
+
   const isSeparator = (cardTitle: string) => {
     return cardTitle === "---";
   };
@@ -32,6 +39,10 @@ export default function CardItem({
     }
   };
 
+  const handleBlur = () => {
+    setEditing(false);
+  };
+
   const handleClickEdit = () => {
     setEditing(true);
   };
@@ -44,6 +55,7 @@ export default function CardItem({
             class="w-full border-none rounded-1 p-2 resize-none text-medium font-sans-serif"
             ref={ref}
             onKeyDown={hendleKeyDown}
+            onBlur={handleBlur}
           >
             {cardTitle}
           </textarea>
@@ -54,7 +66,10 @@ export default function CardItem({
                 {cardTitle}
               </div>
             ) : (
-              <button class="w-full h-4 bg-transparent border-none px-2">
+              <button
+                class="w-full h-4 bg-transparent border-none px-2"
+                onClick={handleClickEdit}
+              >
                 <hr class="border-solid border-1 border-color-primary" />
               </button>
             )}

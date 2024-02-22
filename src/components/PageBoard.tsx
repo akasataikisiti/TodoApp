@@ -62,6 +62,16 @@ export default function PageBoard({
     }
   };
 
+  const updateListTitle = (listId: string, newTitle: string) => {
+    const updated = service.updateListTitle(
+      state.value,
+      newTitle,
+      boardId,
+      listId
+    );
+    updateState(updated);
+  };
+
   const selectBgColor = (e: JSX.TargetedMouseEvent<HTMLInputElement>) => {
     const updated = service.updateBoardBgColor(
       state.value,
@@ -159,7 +169,12 @@ export default function PageBoard({
           filterListsByCardName(query, found.lists).map((list, idx) => (
             <div key={idx} class="flex-column">
               <div class="w-64 p-3 bg-secondary rounded-2 layout-stack-3 drop-shadow">
-                <ListHeader id={list.id} title={list.title} />
+                <ListHeader
+                  titleId={list.id}
+                  title={list.title}
+                  cardsNum={list.cards.length}
+                  updateListTitle={updateListTitle}
+                />
                 <CardForm listId={list.id} addCard={addCard} />
                 <CardList
                   cards={list.cards}
