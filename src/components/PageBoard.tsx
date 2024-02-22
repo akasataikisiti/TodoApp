@@ -9,6 +9,7 @@ import { JSX } from "preact/jsx-runtime";
 import { useEffect, useRef, useState } from "preact/hooks";
 import CardForm from "./CardForm";
 import { BgColor } from "../types/bgColor";
+import { filterListsByCardName } from "../utils";
 
 export default function PageBoard({
   boardId,
@@ -24,6 +25,8 @@ export default function PageBoard({
   const repository = new RepositoryLocalFile();
   const service = new ApplicationService(repository);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const imputCardFilterElement = useRef<HTMLInputElement>(null);
+  const [query, setQuery] = useState<string>("");
 
   useEffect(() => {
     if (cardId) {
@@ -93,6 +96,19 @@ export default function PageBoard({
     updateState(updated);
   };
 
+  const handleSubmit = (e: JSX.TargetedSubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const query = imputCardFilterElement.current?.value;
+    if (query) {
+      setQuery(query);
+    } else {
+      setQuery("");
+    }
+  };
+  const handleReset = () => {
+    setQuery("");
+  };
+
   const deleteCard = (cardId: string, listId: string) => {
     const updated = service.deleteCard(state.value, cardId, boardId, listId);
     updateState(updated);
@@ -114,9 +130,33 @@ export default function PageBoard({
           />
         </div>
       )}
+      <div class="px-3 h-6">
+        <form onSubmit={handleSubmit} onReset={handleReset}>
+          <div class="flex-row">
+            <label for="card-filter">
+              <div class="inline-block h-6 w-6 text-center border-solid border-1 border-color-primary bg-primary">
+                <span class="text-secondary">🔍</span>
+              </div>
+            </label>
+            <input
+              id="card-filter"
+              type="text"
+              class="w-48 h-6 px-2 bg-primary border-solid border-1 border-color-primary border-l-none"
+              placeholder="Filter"
+              ref={imputCardFilterElement}
+            />
+            <button
+              type="reset"
+              class="h-6 border-solid border-1 border-color-primary bg-primary px-2 text-secondary text-small"
+            >
+              Clear
+            </button>
+          </div>
+        </form>
+      </div>
       <div class="f-1 flex-row layout-stack-horizontal-4 overflow-x-auto px-3 pattern-scrollbar-thick">
         {found &&
-          found.lists.map((list, idx) => (
+          filterListsByCardName(query, found.lists).map((list, idx) => (
             <div key={idx} class="flex-column">
               <div class="w-64 p-3 bg-secondary rounded-2 layout-stack-3 drop-shadow">
                 <ListHeader id={list.id} title={list.title} />

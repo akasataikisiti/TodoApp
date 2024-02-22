@@ -57,7 +57,7 @@ export default function BoardList({
         </button>
       ) : (
         <div class="layout-stack-2 overflow-y-auto pattern-height-board-list py-2 pr-2 pattern-scrollbar-thick">
-          {filterBoardsByName(boards, query).map((board) => (
+          {filterBoardsByName(query, boards).map((board) => (
             <BoardItem key={board.id} board={board} />
           ))}
         </div>
