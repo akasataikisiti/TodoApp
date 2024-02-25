@@ -6,12 +6,14 @@ import { BoardFormDialog } from "./BoardFormDialog";
 import { BgColor } from "../types/bgColor";
 import { ApplicationService } from "../applications/applicationService";
 import { RepositoryLocalFile } from "../repositories/repository";
+import { JSX } from "preact/jsx-runtime";
 
 export default function PageIndex({ state }: { state: Signal<Board[]> }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const detailsElement = useRef<HTMLDetailsElement>(null);
   const repository = new RepositoryLocalFile();
   const service = new ApplicationService(repository);
+  // const inputFileElement = useRef<HTMLInputElement>(null);
 
   const handleDialogOpen = () => {
     setDialogOpen(true);
@@ -26,6 +28,36 @@ export default function PageIndex({ state }: { state: Signal<Board[]> }) {
       state.value = service.clear();
       detailsElement.current?.removeAttribute("open");
     }
+  };
+
+  const handleChangeInput = (e: JSX.TargetedInputEvent<HTMLInputElement>) => {
+    const files = e.currentTarget.files;
+    if (!files || files?.length === 0) return;
+    const reader = new FileReader();
+    const file = files[0];
+    reader.addEventListener(
+      "load",
+      () => {
+        if (typeof reader.result === "string") {
+          // id duplicate check
+          const importResult: Board[] = JSON.parse(reader.result);
+          const importResultIds: string[] = importResult.map(
+            (b: Board) => b.id
+          );
+          const currentBoards: string[] = state.value.map((b: Board) => b.id);
+          const isDuplicate = importResultIds.some((id: string) =>
+            currentBoards.includes(id)
+          );
+          if (!isDuplicate) {
+            state.value = service.import(state.value, importResult);
+          } else {
+            window.alert("The board ID is duplicated.");
+          }
+        }
+      },
+      false
+    );
+    reader.readAsText(file);
   };
 
   const addBoard = (
@@ -79,7 +111,8 @@ export default function PageIndex({ state }: { state: Signal<Board[]> }) {
                       <li class="h-8">
                         <a
                           class="px-4 py-2 text-primary cursor-pointer text-small text-decoration-none block hover"
-                          download={"trellith.json"}
+                          download={"MyTodoApps.json"}
+                          href={`data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(state.value))}`}
                         >
                           Export
                         </a>
@@ -93,6 +126,8 @@ export default function PageIndex({ state }: { state: Signal<Board[]> }) {
                             class="pattern-file display-none"
                             type="file"
                             accept=".json"
+                            // ref={inputFileElement}
+                            onChange={handleChangeInput}
                           />
                         </label>
                       </li>

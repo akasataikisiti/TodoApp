@@ -27,8 +27,10 @@ export class ApplicationService {
     return result;
   }
 
-  set(boards: Board[]) {
-    this.repository.set(boards);
+  import(boards: Board[], importBoards: Board[]) {
+    const updated = [...importBoards, ...boards];
+    this.repository.set(updated);
+    return updated;
   }
   // Board
   createBoard(

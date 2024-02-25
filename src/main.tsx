@@ -16,7 +16,6 @@ import NavBar from "./components/NavBar";
 import { createSignals } from "./appSignals";
 import { Display } from "./types/display";
 import PageBoard from "./components/PageBoard";
-import { testBoards } from "./testsdata";
 import { RepositoryLocalFile } from "./repositories/repository";
 import { ApplicationService } from "./applications/applicationService";
 
@@ -31,9 +30,6 @@ function Main() {
     const boards: Board[] | undefined = service.load();
     if (boards.length > 0) {
       boardsState.value = boards;
-    } else {
-      boardsState.value = testBoards;
-      service.set(testBoards);
     }
   }, []);
   return (
