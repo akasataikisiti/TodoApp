@@ -9,6 +9,9 @@ import { RepositoryLocalFile } from "../repositories/repository";
 import { JSX } from "preact/jsx-runtime";
 
 export default function PageIndex({ state }: { state: Signal<Board[]> }) {
+  const [draggingBoardId, setDraggingBoardId] = useState<string | undefined>(
+    undefined
+  );
   const [dialogOpen, setDialogOpen] = useState(false);
   const detailsElement = useRef<HTMLDetailsElement>(null);
   const repository = new RepositoryLocalFile();
@@ -27,6 +30,34 @@ export default function PageIndex({ state }: { state: Signal<Board[]> }) {
     if (confirm("Are you sure you want to delete all boards?")) {
       state.value = service.clear();
       detailsElement.current?.removeAttribute("open");
+    }
+  };
+  const handleDragEnd = () => setDraggingBoardId(undefined);
+  const handleDragOver = (e: JSX.TargetedDragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    console.log("drag over");
+  };
+
+  const handleDragStart = (e: JSX.TargetedDragEvent<HTMLDivElement>) => {
+    if (e.dataTransfer) {
+      e.dataTransfer.effectAllowed = "move";
+    }
+    const { boardId } = e.currentTarget.dataset;
+    if (boardId) {
+      setDraggingBoardId(boardId);
+    }
+  };
+
+  const handleDrop = (e: JSX.TargetedDragEvent<HTMLDivElement>) => {
+    const { boardId } = e.currentTarget.dataset;
+    const droppedBoardId: string = boardId as string;
+    if (draggingBoardId === droppedBoardId) return;
+    if (droppedBoardId && draggingBoardId) {
+      state.value = service.moveBoard(
+        state.value,
+        draggingBoardId,
+        droppedBoardId
+      );
     }
   };
 
@@ -147,6 +178,10 @@ export default function PageIndex({ state }: { state: Signal<Board[]> }) {
           <div class="overflow-y-auto">
             <BoardList
               boards={state.value}
+              handleDragStart={handleDragStart}
+              handleDragEnd={handleDragEnd}
+              handleDragOver={handleDragOver}
+              handleDrop={handleDrop}
               handleOpenDialog={handleDialogOpen}
             />
           </div>

@@ -6,9 +6,17 @@ import { filterBoardsByName } from "../utils";
 
 export default function BoardList({
   boards,
+  handleDragStart,
+  handleDragEnd,
+  handleDragOver,
+  handleDrop,
   handleOpenDialog: handleDialogOpen
 }: {
   boards: Board[];
+  handleDragStart: (e: JSX.TargetedDragEvent<HTMLDivElement>) => void;
+  handleDragEnd: (e: JSX.TargetedDragEvent<HTMLDivElement>) => void;
+  handleDragOver: (e: JSX.TargetedDragEvent<HTMLDivElement>) => void;
+  handleDrop: (e: JSX.TargetedDragEvent<HTMLDivElement>) => void;
   handleOpenDialog: () => void;
 }) {
   const [query, setQuery] = useState("");
@@ -67,6 +75,10 @@ export default function BoardList({
             <BoardItem
               key={board.id}
               board={board}
+              handleDragStart={handleDragStart}
+              handleDragEnd={handleDragEnd}
+              handleDragOver={handleDragOver}
+              handleDrop={handleDrop}
               cardsNum={board.lists.reduce(
                 (acc, list) => acc + list.cards.length,
                 0

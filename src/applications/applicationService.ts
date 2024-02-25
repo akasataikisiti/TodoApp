@@ -4,6 +4,7 @@ import { BgColor } from "../types/bgColor";
 import { Board } from "../types/board";
 import { List } from "../types/lists";
 import { Card } from "../types/card";
+import { Pos } from "../types/pos";
 
 // const migrateState = (boards: Board[]): Board[] => {
 //   return boards;
@@ -75,6 +76,37 @@ export class ApplicationService {
 
   deleteBoard(boards: Board[], boardId: string) {
     const updated = boards.filter((board) => board.id !== boardId);
+    this.repository.set(updated);
+    return updated;
+  }
+
+  moveBoard(
+    boards: Board[],
+    draggingBoardId: string,
+    dropTargetBoardId: string
+  ): Board[] {
+    const draggingBoard = boards.find((board) => board.id === draggingBoardId);
+    const dropTargetBoard = boards.find(
+      (board) => board.id === dropTargetBoardId
+    );
+    if (!draggingBoard || !dropTargetBoard) return boards;
+    const dropTargetIndex = boards.findIndex(
+      (board) => board.id === dropTargetBoardId
+    );
+    const draggingIndex = boards.findIndex(
+      (board) => board.id === draggingBoardId
+    );
+    const updated = boards.filter(
+      (board) => board.id !== draggingBoardId && board.id !== dropTargetBoardId
+    );
+    if (draggingIndex < dropTargetIndex) {
+      updated.splice(draggingIndex, 0, dropTargetBoard);
+      updated.splice(dropTargetIndex, 0, draggingBoard);
+    } else {
+      updated.splice(dropTargetIndex, 0, draggingBoard);
+      updated.splice(draggingIndex, 0, dropTargetBoard);
+    }
+
     this.repository.set(updated);
     return updated;
   }
