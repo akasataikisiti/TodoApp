@@ -13,7 +13,12 @@ export const applyDisplay = (display: Display) => {
 export const getDisplay = (): Display => {
   const key = "display";
   const display = localStorage.getItem(key);
-  return (display as Display) || "light";
+  if (display) {
+    return (display as Display) || "light";
+  }
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
 };
 
 export const setDisplay = (display: Display) => {
