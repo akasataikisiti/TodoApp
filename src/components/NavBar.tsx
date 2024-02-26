@@ -2,16 +2,17 @@ import { Signal } from "@preact/signals";
 import { Link } from "wouter-preact";
 import { Display } from "../types/display";
 import AppButton from "./AppButton";
+import { applyDisplay, setDisplay } from "../utils";
 
 export default function NavBar({ display }: { display: Signal<Display> }) {
   const handleClick = () => {
     if (display.value === "light") {
-      console.log("light");
       display.value = "dark";
     } else {
-      console.log("dark");
       display.value = "light";
     }
+    applyDisplay(display.value);
+    setDisplay(display.value);
   };
   return (
     <nav>

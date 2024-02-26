@@ -101,3 +101,30 @@ body {
   --color-focus: var(--color-blue-800);
   --brightness-hover: 95%;
 }
+
+/* tokens dark */
+.dark > * {
+  color-scheme: dark;
+  --color-bg-hover: var(--color-gray-700);
+  --color-bg-link: var(--color-gray-700);
+  --color-bg-primary: var(--color-gray-800);
+  --color-bg-secondary: var(--color-gray-900);
+  --color-bg-red: var(--color-red-dark);
+  --color-bg-yellow: var(--color-yellow-dark);
+  --color-bg-green: var(--color-green-dark);
+  --color-bg-blue: var(--color-blue-dark);
+  --color-bg-cyan: var(--color-cyan-dark);
+  --color-bg-magenta: var(--color-magenta-dark);
+  --color-border-primary: var(--color-gray-600);
+  --color-bg-scrollbar: var(--color-gray-700);
+  --color-bg-scrollbar-thumb: var(--color-gray-500);
+  --color-bg-mask: var(--color-gray-600);
+  --color-bg-progress-bar: var(--color-gray-600);
+  --color-bg-progress-value: var(--color-gray-300);
+  --color-text-primary: var(--color-gray-50);
+  --color-text-secondary: var(--color-gray-300);
+  --color-text-tertiary: var(--color-gray-400);
+  --color-fg-link: var(--color-blue-200);
+  --color-focus: var(--color-blue-200);
+  --brightness-hover: 105%;
+}

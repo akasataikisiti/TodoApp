@@ -4,7 +4,6 @@ import { BgColor } from "../types/bgColor";
 import { Board } from "../types/board";
 import { List } from "../types/lists";
 import { Card } from "../types/card";
-import { Pos } from "../types/pos";
 
 // const migrateState = (boards: Board[]): Board[] => {
 //   return boards;

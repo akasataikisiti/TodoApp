@@ -18,6 +18,7 @@ import { Display } from "./types/display";
 import PageBoard from "./components/PageBoard";
 import { RepositoryLocalFile } from "./repositories/repository";
 import { ApplicationService } from "./applications/applicationService";
+import { applyDisplay } from "./utils";
 
 const appDisplay: Signal<Display> = createSignals().appDisplay;
 const boardsState: Signal<Board[]> = createSignals().BoardSignal;
@@ -31,6 +32,7 @@ function Main() {
     if (boards.length > 0) {
       boardsState.value = boards;
     }
+    applyDisplay(appDisplay.value);
   }, []);
   return (
     <>
