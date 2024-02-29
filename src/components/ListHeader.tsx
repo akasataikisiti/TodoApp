@@ -31,8 +31,11 @@ export default function ListHeader({
     setIsEditing(false);
   };
 
-  const handleClick = () => {
+  const handleClickEdit = () => {
     setIsEditing(true);
+    setTimeout(() => {
+      inputElement.current?.focus();
+    }, 100);
   };
 
   const handleClickDeleteAllCards = (
@@ -67,7 +70,7 @@ export default function ListHeader({
           <div class="flex-row">
             <div
               class="f-1 nowrap overflow-x-hidden text-overflow-elipsis"
-              onClick={handleClick}
+              onClick={handleClickEdit}
             >
               {title}
             </div>
