@@ -305,4 +305,54 @@ export class ApplicationService {
     this.repository.set(updated);
     return updated;
   };
+  moveCard = (
+    boards: Board[],
+    boardId: string,
+    listId: string,
+    draggingCardId: string,
+    dropTargetCardId: string
+  ): Board[] => {
+    const board = boards.find((board) => board.id === boardId);
+    if (!board) return boards;
+    const list = board.lists.find((list) => list.id === listId);
+    if (!list) return boards;
+    const draggingCard = list.cards.find((card) => card.id === draggingCardId);
+    const dropTargetCard = list.cards.find(
+      (card) => card.id === dropTargetCardId
+    );
+    if (!draggingCard || !dropTargetCard) return boards;
+    const dropTargetIndex = list.cards.findIndex(
+      (card) => card.id === dropTargetCardId
+    );
+    const draggingIndex = list.cards.findIndex(
+      (card) => card.id === draggingCardId
+    );
+    // if (draggingIndex < 0 || dropTargetIndex < 0) return boards;
+    const update_cards = list.cards.filter(
+      (card) => card.id !== draggingCardId && card.id !== dropTargetCardId
+    );
+    if (draggingIndex < dropTargetIndex) {
+      update_cards.splice(draggingIndex, 0, dropTargetCard);
+      update_cards.splice(dropTargetIndex, 0, draggingCard);
+    } else {
+      update_cards.splice(dropTargetIndex, 0, draggingCard);
+      update_cards.splice(draggingIndex, 0, dropTargetCard);
+    }
+
+    const updated = boards.map((board) => {
+      return board.id === boardId
+        ? {
+            ...board,
+            lists: board.lists.map((list) => {
+              return list.id === listId
+                ? { ...list, cards: update_cards }
+                : list;
+            })
+          }
+        : board;
+    });
+
+    this.repository.set(updated);
+    return updated;
+  };
 }

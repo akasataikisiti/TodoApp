@@ -30,6 +30,9 @@ export default function PageBoard({
   const [draggingListId, setDraggingListId] = useState<string | undefined>(
     undefined
   );
+  const [draggingCardId, setDraggingCardId] = useState<string | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     if (cardId) {
@@ -167,6 +170,32 @@ export default function PageBoard({
     }
   };
 
+  const handleDragStartCard = (e: JSX.TargetedDragEvent<HTMLDivElement>) => {
+    if (e.dataTransfer) {
+      e.dataTransfer.effectAllowed = "move";
+    }
+    const cardId = e.currentTarget.dataset.cardId;
+    setDraggingCardId(cardId);
+  };
+  const handleDragEndCard = () => {
+    setDraggingCardId(undefined);
+  };
+
+  const handleDropOnCard = (e: JSX.TargetedDragEvent<HTMLDivElement>) => {
+    const { cardId, listId } = e.currentTarget.dataset;
+    if (draggingCardId === cardId) return;
+    if (draggingCardId && cardId && listId) {
+      const updated = service.moveCard(
+        state.value,
+        boardId,
+        listId,
+        draggingCardId,
+        cardId
+      );
+      updateState(updated);
+    }
+  };
+
   return (
     <div
       class={`flex-column h-full bg-${found?.bgColor ? found.bgColor : "primary"}`}
@@ -234,6 +263,9 @@ export default function PageBoard({
                   listId={list.id}
                   deleteCard={deleteCard}
                   updateCardTitle={updateCardTitle}
+                  handleDragEndCard={handleDragEndCard}
+                  handleDragStartCard={handleDragStartCard}
+                  handleDropOnCard={handleDropOnCard}
                 />
               </div>
             </div>

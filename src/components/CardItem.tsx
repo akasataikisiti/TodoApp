@@ -6,13 +6,19 @@ export default function CardItem({
   listId,
   cardTitle,
   deleteCard,
-  updateCardTitle
+  updateCardTitle,
+  handleDragEnd,
+  handleDragStart,
+  handleDrop
 }: {
   cardId: string;
   listId: string;
   cardTitle: string;
   deleteCard: (id: string, listId: string) => void;
   updateCardTitle: (cardId: string, cardTitle: string, listId: string) => void;
+  handleDragEnd: (e: JSX.TargetedDragEvent<HTMLDivElement>) => void;
+  handleDragStart: (e: JSX.TargetedDragEvent<HTMLDivElement>) => void;
+  handleDrop: (e: JSX.TargetedDragEvent<HTMLDivElement>) => void;
 }) {
   const ref = useRef<HTMLTextAreaElement>(null);
   const [editing, setEditing] = useState<boolean>(false);
@@ -48,7 +54,15 @@ export default function CardItem({
   };
 
   return (
-    <div class="rounded-1 p-2 bg-primary flex-column cursor-grab drop-shadow pattern-hiding-child hover-bg-card-item">
+    <div
+      class="rounded-1 p-2 bg-primary flex-column cursor-grab drop-shadow pattern-hiding-child hover-bg-card-item"
+      draggable
+      onDragEnd={handleDragEnd}
+      onDragStart={handleDragStart}
+      onDrop={handleDrop}
+      data-card-id={cardId}
+      data-list-id={listId}
+    >
       <div class="f-1 overflow-x-hidden">
         {editing ? (
           <textarea
