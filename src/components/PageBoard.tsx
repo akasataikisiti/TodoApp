@@ -155,6 +155,7 @@ export default function PageBoard({
 
   const handleDropOnList = (e: JSX.TargetedDragEvent<HTMLDivElement>) => {
     const listId = e.currentTarget.dataset.listId;
+    if (draggingListId === listId) return;
     if (draggingListId && listId) {
       const updated = service.moveList(
         state.value,
