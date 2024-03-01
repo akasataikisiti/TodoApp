@@ -27,6 +27,9 @@ export default function PageBoard({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const imputCardFilterElement = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState<string>("");
+  const [draggingListId, setDraggingListId] = useState<string | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     if (cardId) {
@@ -134,6 +137,35 @@ export default function PageBoard({
     updateState(updated);
   };
 
+  const handleDragStartList = (e: JSX.TargetedDragEvent<HTMLDivElement>) => {
+    if (e.dataTransfer) {
+      e.dataTransfer.effectAllowed = "move";
+    }
+    const listId = e.currentTarget.dataset.listId;
+    setDraggingListId(listId);
+  };
+
+  const handleDragEndList = () => {
+    setDraggingListId(undefined);
+  };
+
+  const handleDragOver = (e: JSX.TargetedDragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
+  const handleDropOnList = (e: JSX.TargetedDragEvent<HTMLDivElement>) => {
+    const listId = e.currentTarget.dataset.listId;
+    if (draggingListId && listId) {
+      const updated = service.moveList(
+        state.value,
+        boardId,
+        draggingListId,
+        listId
+      );
+      updateState(updated);
+    }
+  };
+
   return (
     <div
       class={`flex-column h-full bg-${found?.bgColor ? found.bgColor : "primary"}`}
@@ -178,7 +210,15 @@ export default function PageBoard({
         {found &&
           filterListsByCardName(query, found.lists).map((list, idx) => (
             <div key={idx} class="flex-column">
-              <div class="w-64 p-3 bg-secondary rounded-2 layout-stack-3 drop-shadow">
+              <div
+                class="w-64 p-3 bg-secondary rounded-2 layout-stack-3 drop-shadow"
+                draggable
+                onDrop={handleDropOnList}
+                onDragOver={handleDragOver}
+                onDragEnd={handleDragEndList}
+                onDragStart={handleDragStartList}
+                data-list-id={list.id}
+              >
                 <ListHeader
                   listId={list.id}
                   title={list.title}

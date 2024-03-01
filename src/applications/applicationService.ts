@@ -95,6 +95,7 @@ export class ApplicationService {
     const draggingIndex = boards.findIndex(
       (board) => board.id === draggingBoardId
     );
+    // if (draggingIndex < 0 || dropTargetIndex < 0) return boards;
     const updated = boards.filter(
       (board) => board.id !== draggingBoardId && board.id !== dropTargetBoardId
     );
@@ -154,6 +155,45 @@ export class ApplicationService {
           }
         : board;
     });
+    this.repository.set(updated);
+    return updated;
+  }
+
+  moveList(
+    boards: Board[],
+    BoardId: string,
+    draggingListId: string,
+    dropTargetListId: string
+  ): Board[] {
+    const board = boards.find((board) => board.id === BoardId);
+    if (!board) return boards;
+    const draggingList = board.lists.find((list) => list.id === draggingListId);
+    const dropTargetList = board.lists.find(
+      (list) => list.id === dropTargetListId
+    );
+    if (!draggingList || !dropTargetList) return boards;
+    const dropTargetIndex = board?.lists.findIndex(
+      (list) => list.id === dropTargetListId
+    );
+    const draggingIndex = board?.lists.findIndex(
+      (list) => list.id === draggingListId
+    );
+    // if (draggingIndex < 0 || dropTargetIndex < 0) return boards;
+    const update_lists = board.lists.filter(
+      (list) => list.id !== draggingListId && list.id !== dropTargetListId
+    );
+    if (draggingListId < dropTargetListId) {
+      update_lists.splice(draggingIndex, 0, dropTargetList);
+      update_lists.splice(dropTargetIndex, 0, draggingList);
+    } else {
+      update_lists.splice(dropTargetIndex, 0, draggingList);
+      update_lists.splice(draggingIndex, 0, dropTargetList);
+    }
+
+    const updated = boards.map((board) => {
+      return board.id === BoardId ? { ...board, lists: update_lists } : board;
+    });
+
     this.repository.set(updated);
     return updated;
   }
